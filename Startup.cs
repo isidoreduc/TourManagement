@@ -27,6 +27,11 @@ namespace TourManagement.API
             services.AddMvc(setupAction =>
             {
                 setupAction.ReturnHttpNotAcceptable = true;
+                // acquire a formatter needed to create a custom media type
+                var jsonOutputFormatter = setupAction.OutputFormatters.OfType<JsonOutputFormatter>().FirstOrDefault();
+                // create custom/vendor media types and adds it to the list of supported ones
+                jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tours+json");
+                jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithestimatedprofits+json");
             })
             .AddJsonOptions(options =>
             {
