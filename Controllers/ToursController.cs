@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TourManagement.API.Dtos;
+using TourManagement.API.Helpers;
 using TourManagement.API.Services;
 
 namespace TourManagement.API.Controllers
@@ -22,24 +23,27 @@ namespace TourManagement.API.Controllers
         public async Task<IActionResult> GetTours()
         {
             var toursFromRepo = await _tourManagementRepository.GetTours();
-
             var tours = Mapper.Map<IEnumerable<Tour>>(toursFromRepo);
             return Ok(tours);
         }
 
+        [HttpGet("{tourId}")]
+        [RequestheaderMatchesMediaType("Accept", new[] { "application/vnd.isidore.tour+json" })]
+        public async Task<IActionResult> GetTour(Guid tourId) => 
+            await GetTourGeneric<Tour>(tourId);
 
-        [HttpGet("{tourId}", Name = "GetTour")]
-        public async Task<IActionResult> GetTour(Guid tourId)
+        [HttpGet("{tourId}")]
+        [RequestheaderMatchesMediaType("Accept", new[] { "application/vnd.isidore.tourwithestimatedprofits+json" })]
+        public async Task<IActionResult> GetTourWithEstimatedProfits(Guid tourId) => 
+            await GetTourGeneric<TourWithEstimatedProfits>(tourId);
+
+
+
+        public async Task<IActionResult> GetTourGeneric<T>(Guid tourId) where T : class
         {
             var tourFromRepo = await _tourManagementRepository.GetTour(tourId);
-
-            if (tourFromRepo == null)
-            {
-                return BadRequest();
-            }
-
-            var tour = Mapper.Map<Tour>(tourFromRepo);
-
+            if (tourFromRepo == null) return BadRequest();
+            var tour = Mapper.Map<T>(tourFromRepo);
             return Ok(tour);
         }        
     }
