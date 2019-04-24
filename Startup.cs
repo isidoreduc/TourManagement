@@ -46,7 +46,7 @@ namespace TourManagement.API
             // register the DbContext on the container, getting the connection string from
             // appsettings (note: use this during development; in a production environment,
             // it's better to store the connection string in an environment variable)
-            var connectionString = Configuration["ConnectionStrings:TourManagementDB"];
+            var connectionString = Configuration["ConnectionStrings:TourDB"];
             services.AddDbContext<TourManagementContext>(o => o.UseSqlServer(connectionString));
 
             // register the repository

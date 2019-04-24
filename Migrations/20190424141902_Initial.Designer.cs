@@ -11,8 +11,8 @@ using TourManagement.API.Services;
 namespace TourManagement.API.Migrations
 {
     [DbContext(typeof(TourManagementContext))]
-    [Migration("20180109144623_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20190424141902_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -83,7 +83,7 @@ namespace TourManagement.API.Migrations
 
                     b.Property<DateTime>("CreatedOn");
 
-                    b.Property<DateTimeOffset>("DateAndTime");
+                    b.Property<DateTimeOffset>("Date");
 
                     b.Property<Guid>("TourId");
 
