@@ -1,8 +1,8 @@
 ﻿<Properties StartupConfiguration="{479FEC61-8911-450E-91A6-29B642882023}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/ToursController.cs">
     <Files>
-      <File FileName="Controllers/ToursController.cs" Line="31" Column="9" />
-      <File FileName="Startup.cs" Line="34" Column="115" />
+      <File FileName="Controllers/ToursController.cs" Line="59" Column="41" />
+      <File FileName="Startup.cs" Line="45" Column="120" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
