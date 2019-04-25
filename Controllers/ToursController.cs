@@ -28,14 +28,20 @@ namespace TourManagement.API.Controllers
             return Ok(tours);
         }
 
+        // to support passing default, unprivilleged data of generic media type application/json for example
         [HttpGet("{tourId}", Name = "GetTour")]
-        [RequestheaderMatchesMediaType("Accept", new[] { "application/vnd.isidore.tour+json" })]
-        public async Task<IActionResult> GetTour(Guid tourId) => 
+        public async Task<IActionResult> GetDefaultTour(Guid tourId) =>
+            await GetTourGeneric<Tour>(tourId);
+
+
+        [HttpGet("{tourId}", Name = "GetTour")]
+        [RequestheaderMatchesMediaType("Accept", new[] {"application/vnd.isidore.tour+json" })]
+        public async Task<IActionResult> GetTour(Guid tourId) =>
             await GetTourGeneric<Tour>(tourId);
 
         [HttpGet("{tourId}")]
         [RequestheaderMatchesMediaType("Accept", new[] { "application/vnd.isidore.tourwithestimatedprofits+json" })]
-        public async Task<IActionResult> GetTourWithEstimatedProfits(Guid tourId) => 
+        public async Task<IActionResult> GetTourWithEstimatedProfits(Guid tourId) =>
             await GetTourGeneric<TourWithEstimatedProfits>(tourId);
 
 
@@ -52,7 +58,7 @@ namespace TourManagement.API.Controllers
         #region HttpPost
 
         [HttpPost]
-        [RequestheaderMatchesMediaType("Content-Type", new[] { "application/vnd.isidore.tourforcreation+json" })]
+        [RequestheaderMatchesMediaType("Content-Type", new[] { "application/json", "application/vnd.isidore.tourforcreation+json" })]
         public async Task<IActionResult> AddTour([FromBody]TourForCreation tour)
         {
             if (tour == null) return BadRequest();
@@ -70,12 +76,12 @@ namespace TourManagement.API.Controllers
         public async Task<IActionResult> AddSpecificTour<T>(T tour) where T : class
         {
             var tourEntity = Mapper.Map<Entities.Tour>(tour); // map parameter to persistance model
-            if(tourEntity.ManagerId == Guid.Empty) // if no managerid, hard code one
+            if (tourEntity.ManagerId == Guid.Empty) // if no managerid, hard code one
             {
                 tourEntity.ManagerId = new Guid("g07ba678-b6e0-4307-afd9-e804c23b3cd3");
             }
             await _tourManagementRepository.AddTour(tourEntity); // add to repo
-            if(! await _tourManagementRepository.SaveAsync()) // error message if fails on save
+            if (!await _tourManagementRepository.SaveAsync()) // error message if fails on save
             {
                 throw new Exception("Failed on save!");
             }
