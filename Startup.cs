@@ -27,11 +27,24 @@ namespace TourManagement.API
             services.AddMvc(setupAction =>
             {
                 setupAction.ReturnHttpNotAcceptable = true;
-                // acquire a formatter needed to create a custom media type
+                // acquire a formatter needed to create a custom media type (for HttpGet)
                 var jsonOutputFormatter = setupAction.OutputFormatters.OfType<JsonOutputFormatter>().FirstOrDefault();
                 // create custom/vendor media types and adds it to the list of supported ones
-                jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tours+json");
-                jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithestimatedprofits+json");
+                if(jsonOutputFormatter != null)
+                {
+                    jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tour+json");
+                    jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithestimatedprofits+json");
+                }
+
+                // for HttpPost
+                var jsonInputFormatter = setupAction.InputFormatters.OfType<JsonInputFormatter>().FirstOrDefault();
+                // create custom/vendor media types and adds it to the list of supported ones
+                if (jsonInputFormatter != null)
+                {
+                    jsonInputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourforcreation+json");
+                    jsonInputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithmanagerforcreation+json");
+                }
+                    
             })
             .AddJsonOptions(options =>
             {
@@ -86,13 +99,19 @@ namespace TourManagement.API
 
             AutoMapper.Mapper.Initialize(config =>
             {
+                // mapping for output / delivering resources to client
                 config.CreateMap<Entities.Tour, Dtos.Tour>()
                     .ForMember(d => d.Band, o => o.MapFrom(s => s.Band.Name)); 
                 config.CreateMap<Entities.Tour, Dtos.TourWithEstimatedProfits>()
                      .ForMember(d => d.Band, o => o.MapFrom(s => s.Band.Name));
+                //
                 config.CreateMap<Entities.Band, Dtos.Band>();
                 config.CreateMap<Entities.Manager, Dtos.Manager>();
-                config.CreateMap<Entities.Show, Dtos.Show>(); 
+                config.CreateMap<Entities.Show, Dtos.Show>();
+                // mapping for input / database persistance
+                config.CreateMap<Dtos.TourForCreation, Entities.Tour>();
+                config.CreateMap<Dtos.TourWithManagerForCreation, Entities.Tour>();
+
             });
 
             // Enable CORS
