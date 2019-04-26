@@ -57,6 +57,13 @@ namespace TourManagement.API.Controllers
 
         #region HttpPost
 
+        //[HttpPost]
+        //public async Task<IActionResult> AddTourDefault([FromBody]TourForCreation tour)
+        //{
+        //    if (tour == null) return BadRequest();
+        //    return await AddSpecificTour(tour);
+        //}
+
         [HttpPost]
         [RequestheaderMatchesMediaType("Content-Type", new[] { "application/json", "application/vnd.isidore.tourforcreation+json" })]
         public async Task<IActionResult> AddTour([FromBody]TourForCreation tour)
