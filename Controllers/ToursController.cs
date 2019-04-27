@@ -66,13 +66,12 @@ namespace TourManagement.API.Controllers
 
         #region HttpPost
 
-        //[HttpPost]
-
-        //public async Task<IActionResult> AddTourDefault([FromBody]TourForCreation tour)
-        //{
-        //    if (tour == null) return BadRequest();
-        //    return await AddSpecificTour(tour);
-        //}
+        [HttpPost]
+        public async Task<IActionResult> AddTourDefault([FromBody]TourForCreation tour)
+        {
+            if (tour == null) return BadRequest();
+            return await AddSpecificTour(tour);
+        }
 
         [HttpPost]
         [RequestheaderMatchesMediaType("Content-Type", new[] { "application/json", "application/vnd.isidore.tourforcreation+json" })]
@@ -85,6 +84,22 @@ namespace TourManagement.API.Controllers
         [HttpPost]
         [RequestheaderMatchesMediaType("Content-Type", new[] { "application/vnd.isidore.tourwithmanagerforcreation+json" })]
         public async Task<IActionResult> AddTourWithManager([FromBody]TourWithManagerForCreation tour)
+        {
+            if (tour == null) return BadRequest();
+            return await AddSpecificTour(tour);
+        }
+
+        [HttpPost]
+        [RequestheaderMatchesMediaType("Content-Type", new[] { "application/vnd.isidore.tourwithshowsforcreation+json" })]
+        public async Task<IActionResult> AddTourWithShows([FromBody]TourWithShowsForCreation tour)
+        {
+            if (tour == null) return BadRequest();
+            return await AddSpecificTour(tour);
+        }
+
+        [HttpPost]
+        [RequestheaderMatchesMediaType("Content-Type", new[] { "application/vnd.isidore.tourwithmanagerandshowsforcreation+json" })]
+        public async Task<IActionResult> AddTourWithManagerAndShows([FromBody]TourWithManagerAndShowsForCreation tour)
         {
             if (tour == null) return BadRequest();
             return await AddSpecificTour(tour);

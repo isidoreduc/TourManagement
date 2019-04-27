@@ -45,6 +45,8 @@ namespace TourManagement.API
                 {
                     jsonInputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourforcreation+json");
                     jsonInputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithmanagerforcreation+json");
+                    jsonInputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithshowsforcreation+json");
+                    jsonInputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithmanagerandshowsforcreation+json");
                 }
                     
             })
@@ -117,6 +119,9 @@ namespace TourManagement.API
                 // mapping for input / database persistance
                 config.CreateMap<Dtos.TourForCreation, Entities.Tour>();
                 config.CreateMap<Dtos.TourWithManagerForCreation, Entities.Tour>();
+                config.CreateMap<Dtos.TourWithShowsForCreation, Entities.Tour>();
+                config.CreateMap<Dtos.TourWithManagerAndShowsForCreation, Entities.Tour>();
+                config.CreateMap<Dtos.ShowForCreation, Entities.Show>();
 
             });
 
