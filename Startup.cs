@@ -34,6 +34,8 @@ namespace TourManagement.API
                 {
                     jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tour+json");
                     jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithestimatedprofits+json");
+                    jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithshows+json");
+                    jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithestimatedprofitsandshows+json");
                 }
 
                 // for HttpPost
@@ -104,6 +106,10 @@ namespace TourManagement.API
                     .ForMember(d => d.Band, o => o.MapFrom(s => s.Band.Name)); 
                 config.CreateMap<Entities.Tour, Dtos.TourWithEstimatedProfits>()
                      .ForMember(d => d.Band, o => o.MapFrom(s => s.Band.Name));
+                config.CreateMap<Entities.Tour, Dtos.TourWithShows>()
+                     .ForMember(d => d.Band, o => o.MapFrom(s => s.Band.Name)); 
+                config.CreateMap<Entities.Tour, Dtos.TourWithEstimatedProfitsAndShows>()
+                      .ForMember(d => d.Band, o => o.MapFrom(s => s.Band.Name));
                 //
                 config.CreateMap<Entities.Band, Dtos.Band>();
                 config.CreateMap<Entities.Manager, Dtos.Manager>();

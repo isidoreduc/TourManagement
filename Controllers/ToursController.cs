@@ -29,7 +29,7 @@ namespace TourManagement.API.Controllers
         }
 
         // to support passing default, unprivilleged data of generic media type application/json for example
-        [HttpGet("{tourId}", Name = "GetTour")]
+        [HttpGet("{tourId}")]
         public async Task<IActionResult> GetDefaultTour(Guid tourId) =>
             await GetTourGeneric<Tour>(tourId);
 
@@ -44,11 +44,20 @@ namespace TourManagement.API.Controllers
         public async Task<IActionResult> GetTourWithEstimatedProfits(Guid tourId) =>
             await GetTourGeneric<TourWithEstimatedProfits>(tourId);
 
+        [HttpGet("{tourId}")]
+        [RequestheaderMatchesMediaType("Accept", new[] { "application/vnd.isidore.tourwithshows+json" })]
+        public async Task<IActionResult> GetTourWithShows(Guid tourId) =>
+            await GetTourGeneric<TourWithShows>(tourId, true);
+
+        [HttpGet("{tourId}")]
+        [RequestheaderMatchesMediaType("Accept", new[] { "application/vnd.isidore.tourwithestimatedprofitsandshows+json" })]
+        public async Task<IActionResult> GetTourWithEstimatedProfitsAndShows(Guid tourId) =>
+            await GetTourGeneric<TourWithEstimatedProfitsAndShows>(tourId, true);
 
 
-        public async Task<IActionResult> GetTourGeneric<T>(Guid tourId) where T : class
+        public async Task<IActionResult> GetTourGeneric<T>(Guid tourId, bool includeShows = false) where T : class
         {
-            var tourFromRepo = await _tourManagementRepository.GetTour(tourId);
+            var tourFromRepo = await _tourManagementRepository.GetTour(tourId, includeShows);
             if (tourFromRepo == null) return BadRequest();
             var tour = Mapper.Map<T>(tourFromRepo);
             return Ok(tour);
@@ -58,6 +67,7 @@ namespace TourManagement.API.Controllers
         #region HttpPost
 
         //[HttpPost]
+
         //public async Task<IActionResult> AddTourDefault([FromBody]TourForCreation tour)
         //{
         //    if (tour == null) return BadRequest();
