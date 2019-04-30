@@ -36,6 +36,7 @@ namespace TourManagement.API
                     jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithestimatedprofits+json");
                     jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithshows+json");
                     jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithestimatedprofitsandshows+json");
+                    jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.showcollection+json");
                 }
 
                 // for HttpPost
@@ -47,8 +48,10 @@ namespace TourManagement.API
                     jsonInputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithmanagerforcreation+json");
                     jsonInputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithshowsforcreation+json");
                     jsonInputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithmanagerandshowsforcreation+json");
+                    jsonInputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.showcollectionforcreation+json");
+
                 }
-                    
+
             })
             .AddJsonOptions(options =>
             {
