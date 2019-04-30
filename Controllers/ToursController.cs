@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace TourManagement.API.Controllers
 
 
         [HttpGet("{tourId}", Name = "GetTour")]
-        [RequestheaderMatchesMediaType("Accept", new[] {"application/vnd.isidore.tour+json" })]
+        [RequestheaderMatchesMediaType("Accept", new[] { "application/vnd.isidore.tour+json" })]
         public async Task<IActionResult> GetTour(Guid tourId) =>
             await GetTourGeneric<Tour>(tourId);
 
@@ -123,5 +124,51 @@ namespace TourManagement.API.Controllers
         }
 
         #endregion HttpPost
+
+        #region HttpPatch
+
+        [HttpPatch("{tourId}")]
+        public async Task<IActionResult> PartiallyUpdateTour(Guid tourId,
+          [FromBody] JsonPatchDocument<TourForUpdate> jsonPatchDocument)
+        {
+            if (jsonPatchDocument == null)
+            {
+                return BadRequest();
+            }
+
+            var tourFromRepo = await _tourManagementRepository.GetTour(tourId);
+
+            if (tourFromRepo == null)
+            {
+                return BadRequest();
+            }
+
+            var tourToPatch = Mapper.Map<TourForUpdate>(tourFromRepo);
+
+            jsonPatchDocument.ApplyTo(tourToPatch, ModelState);
+
+            //if (!ModelState.IsValid)
+            //{
+            //    return new UnprocessableEntityObjectResult(ModelState);
+            //}
+
+            //if (!TryValidateModel(tourToPatch))
+            //{
+            //    return new UnprocessableEntityObjectResult(ModelState);
+            //}
+
+            Mapper.Map(tourToPatch, tourFromRepo);
+
+            await _tourManagementRepository.UpdateTour(tourFromRepo);
+
+            if (!await _tourManagementRepository.SaveAsync())
+            {
+                throw new Exception("Updating a tour failed on save.");
+            }
+
+            return NoContent();
+        }
+
+        #endregion HttpPatch
     }
 }

@@ -1,23 +1,21 @@
 ﻿<Properties StartupConfiguration="{479FEC61-8911-450E-91A6-29B642882023}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/ShowCollectionController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Startup.cs">
     <Files>
       <File FileName="Controllers/ToursController.cs" Line="77" Column="39" />
-      <File FileName="Startup.cs" Line="39" Column="112" />
-      <File FileName="Controllers/ShowCollectionController.cs" Line="36" Column="1" />
+      <File FileName="Startup.cs" Line="40" Column="112" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="TourManagement.API" expanded="True">
             <Node name="TourManagement.API" expanded="True">
-              <Node name="Controllers" expanded="True">
-                <Node name="ShowCollectionController.cs" selected="True" />
-              </Node>
+              <Node name="Controllers" expanded="True" />
               <Node name="Dtos" expanded="True" />
               <Node name="Entities" expanded="True" />
               <Node name="Helpers" expanded="True" />
               <Node name="Properties" expanded="True" />
               <Node name="Services" expanded="True" />
+              <Node name="Startup.cs" selected="True" />
             </Node>
           </Node>
         </State>

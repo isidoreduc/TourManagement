@@ -30,13 +30,14 @@ namespace TourManagement.API
                 // acquire a formatter needed to create a custom media type (for HttpGet)
                 var jsonOutputFormatter = setupAction.OutputFormatters.OfType<JsonOutputFormatter>().FirstOrDefault();
                 // create custom/vendor media types and adds it to the list of supported ones
-                if(jsonOutputFormatter != null)
+                if (jsonOutputFormatter != null)
                 {
                     jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tour+json");
                     jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithestimatedprofits+json");
                     jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithshows+json");
                     jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.tourwithestimatedprofitsandshows+json");
                     jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.isidore.showcollection+json");
+                    jsonOutputFormatter.SupportedMediaTypes.Add("application/json-patch+json");
                 }
 
                 // for HttpPost
@@ -108,11 +109,11 @@ namespace TourManagement.API
             {
                 // mapping for output / delivering resources to client
                 config.CreateMap<Entities.Tour, Dtos.Tour>()
-                    .ForMember(d => d.Band, o => o.MapFrom(s => s.Band.Name)); 
+                    .ForMember(d => d.Band, o => o.MapFrom(s => s.Band.Name));
                 config.CreateMap<Entities.Tour, Dtos.TourWithEstimatedProfits>()
                      .ForMember(d => d.Band, o => o.MapFrom(s => s.Band.Name));
                 config.CreateMap<Entities.Tour, Dtos.TourWithShows>()
-                     .ForMember(d => d.Band, o => o.MapFrom(s => s.Band.Name)); 
+                     .ForMember(d => d.Band, o => o.MapFrom(s => s.Band.Name));
                 config.CreateMap<Entities.Tour, Dtos.TourWithEstimatedProfitsAndShows>()
                       .ForMember(d => d.Band, o => o.MapFrom(s => s.Band.Name));
                 //
@@ -125,6 +126,8 @@ namespace TourManagement.API
                 config.CreateMap<Dtos.TourWithShowsForCreation, Entities.Tour>();
                 config.CreateMap<Dtos.TourWithManagerAndShowsForCreation, Entities.Tour>();
                 config.CreateMap<Dtos.ShowForCreation, Entities.Show>();
+
+                config.CreateMap<Entities.Tour, Dtos.TourForUpdate>().ReverseMap();
 
             });
 
