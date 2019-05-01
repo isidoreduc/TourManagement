@@ -68,47 +68,40 @@ namespace TourManagement.API.Controllers
         #region HttpPost
 
         [HttpPost]
-        public async Task<IActionResult> AddTourDefault([FromBody]TourForCreation tour)
-        {
-            if (tour == null) return BadRequest();
-            return await AddSpecificTour(tour);
-        }
+        public async Task<IActionResult> AddTourDefault([FromBody]TourForCreation tour) =>
+            await AddSpecificTour(tour);
+
 
         [HttpPost]
         [RequestheaderMatchesMediaType("Content-Type", new[] { "application/json", "application/vnd.isidore.tourforcreation+json" })]
-        public async Task<IActionResult> AddTour([FromBody]TourForCreation tour)
-        {
-            if (tour == null) return BadRequest();
-            return await AddSpecificTour(tour);
-        }
+        public async Task<IActionResult> AddTour([FromBody]TourForCreation tour) =>
+            await AddSpecificTour(tour);
+
 
         [HttpPost]
         [RequestheaderMatchesMediaType("Content-Type", new[] { "application/vnd.isidore.tourwithmanagerforcreation+json" })]
-        public async Task<IActionResult> AddTourWithManager([FromBody]TourWithManagerForCreation tour)
-        {
-            if (tour == null) return BadRequest();
-            return await AddSpecificTour(tour);
-        }
+        public async Task<IActionResult> AddTourWithManager([FromBody]TourWithManagerForCreation tour) =>
+            await AddSpecificTour(tour);
+
 
         [HttpPost]
         [RequestheaderMatchesMediaType("Content-Type", new[] { "application/vnd.isidore.tourwithshowsforcreation+json" })]
-        public async Task<IActionResult> AddTourWithShows([FromBody]TourWithShowsForCreation tour)
-        {
-            if (tour == null) return BadRequest();
-            return await AddSpecificTour(tour);
-        }
+        public async Task<IActionResult> AddTourWithShows([FromBody]TourWithShowsForCreation tour) =>
+            await AddSpecificTour(tour);
+
 
         [HttpPost]
         [RequestheaderMatchesMediaType("Content-Type", new[] { "application/vnd.isidore.tourwithmanagerandshowsforcreation+json" })]
-        public async Task<IActionResult> AddTourWithManagerAndShows([FromBody]TourWithManagerAndShowsForCreation tour)
-        {
-            if (tour == null) return BadRequest();
-            return await AddSpecificTour(tour);
-        }
+        public async Task<IActionResult> AddTourWithManagerAndShows([FromBody]TourWithManagerAndShowsForCreation tour) =>
+            await AddSpecificTour(tour);
+
 
         public async Task<IActionResult> AddSpecificTour<T>(T tour) where T : class
         {
+            if (tour == null) return BadRequest();
+            if (!ModelState.IsValid) return BadRequest(); // we make sure invalid objects are not passed through
             var tourEntity = Mapper.Map<Entities.Tour>(tour); // map parameter to persistance model
+
             if (tourEntity.ManagerId == Guid.Empty) // if no managerid, hard code one
             {
                 tourEntity.ManagerId = new Guid("g07ba678-b6e0-4307-afd9-e804c23b3cd3");
@@ -152,10 +145,11 @@ namespace TourManagement.API.Controllers
             //    return new UnprocessableEntityObjectResult(ModelState);
             //}
 
-            //if (!TryValidateModel(tourToPatch))
-            //{
-            //    return new UnprocessableEntityObjectResult(ModelState);
-            //}
+            if (!TryValidateModel(tourToPatch))
+            {
+                //return new UnprocessableEntityObjectResult(ModelState);
+                return BadRequest();
+            }
 
             Mapper.Map(tourToPatch, tourFromRepo);
 
